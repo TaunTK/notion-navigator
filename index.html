@@ -29,20 +29,47 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
   <a id="next" class="nav-btn" href="#">다음 →</a>
 </div>
+
 <script>
-const pages = [{"id":"1c2589a1-0b5c-802c-b703-ed0afd78759b","title":"페이지 1","icon":"📄","url":"https://notion.so/1c2589a10b5c802cb703ed0afd78759b"},{"id":"1c2589a1-0b5c-802b-afa3-c8003ff15907","title":"페이지 2","icon":"📄","url":"https://notion.so/1c2589a10b5c802bafa3c8003ff15907"}];
-let cur = 0;
-function render(){
+// =============================================
+// 여기에 페이지 목록을 입력하세요
+// =============================================
+const pages = [
+  { icon: "📄", title: "달밤포차", url: "https://www.notion.so/1c2589a10b5c802cb703ed0afd78759b" },
+  { icon: "📄", title: "Dream of DeAD", url: "https://www.notion.so/Dream-of-DeAD-1c2589a10b5c802bafa3c8003ff15907" }
+];
+// =============================================
+
+// URL 파라미터에서 현재 페이지 번호 읽기 (?page=1, ?page=2, ...)
+const params = new URLSearchParams(window.location.search);
+let cur = parseInt(params.get('page') || '1') - 1;
+cur = Math.max(0, Math.min(pages.length - 1, cur));
+
+function render() {
   const p = pages[cur];
   document.getElementById('title').textContent = p.icon + ' ' + p.title;
-  document.getElementById('count').textContent = (cur+1) + ' / ' + pages.length;
-  document.getElementById('prev').className = 'nav-btn' + (cur===0?' disabled':'');
-  document.getElementById('next').className = 'nav-btn' + (cur===pages.length-1?' disabled':'');
-  document.getElementById('dots').innerHTML = pages.map((_,i)=>'<div class="dot'+(i===cur?' active':'')+'" onclick="go('+i+')"></div>').join('');
+  document.getElementById('count').textContent = (cur + 1) + ' / ' + pages.length;
+  document.getElementById('prev').className = 'nav-btn' + (cur === 0 ? ' disabled' : '');
+  document.getElementById('next').className = 'nav-btn' + (cur === pages.length - 1 ? ' disabled' : '');
+  document.getElementById('dots').innerHTML = pages.map((_, i) =>
+    '<div class="dot' + (i === cur ? ' active' : '') + '" onclick="jumpTo(' + i + ')"></div>'
+  ).join('');
 }
-function go(i){ cur=i; render(); }
-document.getElementById('prev').onclick=e=>{e.preventDefault();if(cur>0){go(cur-1);window.top.location.href=pages[cur].url;}};
-document.getElementById('next').onclick=e=>{e.preventDefault();if(cur<pages.length-1){go(cur+1);window.top.location.href=pages[cur].url;}};
+
+function jumpTo(i) {
+  window.top.location.href = pages[i].url;
+}
+
+document.getElementById('prev').onclick = e => {
+  e.preventDefault();
+  if (cur > 0) window.top.location.href = pages[cur - 1].url;
+};
+
+document.getElementById('next').onclick = e => {
+  e.preventDefault();
+  if (cur < pages.length - 1) window.top.location.href = pages[cur + 1].url;
+};
+
 render();
 </script>
 </body>
