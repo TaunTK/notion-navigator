@@ -41,8 +41,8 @@ function render(){
   document.getElementById('dots').innerHTML = pages.map((_,i)=>'<div class="dot'+(i===cur?' active':'')+'" onclick="go('+i+')"></div>').join('');
 }
 function go(i){ cur=i; render(); }
-document.getElementById('prev').onclick=e=>{e.preventDefault();if(cur>0){go(cur-1);window.open(pages[cur].url,'_blank');}};
-document.getElementById('next').onclick=e=>{e.preventDefault();if(cur<pages.length-1){go(cur+1);window.open(pages[cur].url,'_blank');}};
+document.getElementById('prev').onclick=e=>{e.preventDefault();if(cur>0){go(cur-1);window.top.location.href=pages[cur].url;}};
+document.getElementById('next').onclick=e=>{e.preventDefault();if(cur<pages.length-1){go(cur+1);window.top.location.href=pages[cur].url;}};
 render();
 </script>
 </body>
